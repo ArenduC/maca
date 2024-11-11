@@ -28,8 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
     if (kDebugMode) {
       if (response.statusCode == 200) {
         dynamic data = jsonDecode(response.body);
-
-        print(data);
+        borderListData = data["data"];
+        print("object: $borderListData");
       }
     }
   }
@@ -82,7 +82,26 @@ class _HomeScreenState extends State<HomeScreen> {
               borderList();
             },
             child: const Text("call data"),
-          )
+          ),
+          Expanded(
+            child: ListView.separated(
+              itemCount: borderListData.length,
+              itemBuilder: (context, index) {
+                final user = borderListData[index];
+                return Container(
+                  height: 50,
+                  width: double.infinity, // Make it take full width
+                  alignment: Alignment.centerLeft, // Align text to the left
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    user["email"],
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) => const Divider(),
+            ),
+          ),
         ],
       )),
     );
