@@ -1,8 +1,5 @@
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:maca/connection/api_connection.dart';
-import 'package:maca/service/api_service.dart';
+import 'package:maca/page/landing_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,75 +10,52 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   dynamic borderListData = [];
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const List<Widget> _widgetOptions = <Widget>[
+    LandingPage(),
+    Text(
+      'Index 1: Business',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: School',
+      style: optionStyle,
+    ),
+  ];
 
-  @override
-  void initState() {
-    borderList();
-    super.initState();
-  }
-
-  Future<void> borderList() async {
-    dynamic response = await ApiService()
-        .apiCallService(endpoint: PostUrl().borderList, method: "GET");
-
-    if (kDebugMode) {
-      if (response.statusCode == 200) {
-        dynamic data = jsonDecode(response.body);
-        borderListData = data["data"];
-        print("object: $borderListData");
-      }
-    }
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('maca'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.add_alert),
-            tooltip: 'Show Snackbar',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('This is a snackbar')));
-            },
-          ),
-        ],
-      ),
       body: Center(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text("Border list"),
-          GestureDetector(
-            onTap: () {
-              borderList();
-            },
-            child: const Text("refresh"),
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
-          Expanded(
-            child: ListView.separated(
-              itemCount: borderListData.length,
-              itemBuilder: (context, index) {
-                final user = borderListData[index];
-                return Container(
-                  height: 50,
-                  width: double.infinity, // Make it take full width
-                  alignment: Alignment.centerLeft, // Align text to the left
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    user["email"],
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) => const Divider(),
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business),
+            label: 'Business',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            label: 'School',
           ),
         ],
-      )),
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      ),
     );
   }
 }
