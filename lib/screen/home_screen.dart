@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:maca/connection/api_connection.dart';
@@ -48,27 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SnackBar(content: Text('This is a snackbar')));
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.navigate_next),
-            tooltip: 'Go to the next page',
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute<void>(
-                builder: (BuildContext context) {
-                  return Scaffold(
-                    appBar: AppBar(
-                      title: const Text('Next page'),
-                    ),
-                    body: const Center(
-                      child: Text(
-                        'This is the next page',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    ),
-                  );
-                },
-              ));
-            },
-          ),
         ],
       ),
       body: Center(
@@ -76,12 +54,12 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Home Page"),
+          const Text("Border list"),
           GestureDetector(
             onTap: () {
               borderList();
             },
-            child: const Text("call data"),
+            child: const Text("refresh"),
           ),
           Expanded(
             child: ListView.separated(
