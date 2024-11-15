@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:maca/page/landing_page.dart';
+import 'package:maca/page/marketing_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,10 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     LandingPage(),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
+    MarketingPage(),
     Text(
       'Index 2: School',
       style: optionStyle,
@@ -36,6 +34,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {});
+        },
+        child: const Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
